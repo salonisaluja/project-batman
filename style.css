@@ -1,573 +1,627 @@
-/* =======================================
-   PROJECT1109
-   WAYNE ENTERPRISES
-======================================= */
+<!DOCTYPE html>
+<html lang="en">
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>BATCOMPUTER</title>
+
+<link rel="stylesheet" href="style.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+<!-- Rain -->
+<div id="rain"></div>
+
+<!-- Lightning -->
+<div id="lightning"></div>
+
+<!-- Fog -->
+<div id="fog1"></div>
+<div id="fog2"></div>
+
+<!-- Flying Bats -->
+<div id="bats">
+<div class="bat bat1">🦇</div>
+<div class="bat bat2">🦇</div>
+<div class="bat bat3">🦇</div>
+<div class="bat bat4">🦇</div>
+<div class="bat bat5">🦇</div>
+</div>
+
+<!-- Gotham -->
+<div class="city"></div>
+
+<!-- Moon -->
+<div class="moon"></div>
+
+<!-- Bat Signal -->
+<div class="signal">
+
+<img src="assets/logo.png">
+
+</div>
+
+<!-- Loading Screen -->
+
+<section id="loading">
+
+<div class="terminal">
+
+<h1>WAYNE ENTERPRISES</h1>
+
+<h2>BATCOMPUTER v9.8</h2>
+
+<div class="line">
+<span>> Connecting...</span>
+</div>
+
+<div class="progress">
+
+<div id="bar"></div>
+
+</div>
+
+<p id="loadingText">
+
+Initializing...
+
+</p>
+
+</div>
+
+</section>
+
+<!-- Hero -->
+
+<section id="hero">
+
+<h3>WELCOME BACK</h3>
+
+<h1>BATMAN</h1>
+
+<p>
+
+GOTHAM CITY NEEDS ITS HERO...
+
+BUT TONIGHT...
+
+IT IS YOUR BIRTHDAY.
+
+</p>
+
+<button id="enter">
+
+ENTER THE BATCAVE
+
+</button>
+
+</section>
+
+<!-- Missions -->
+
+<section id="missions">
+
+<h2>MISSIONS</h2>
+
+<div class="cards">
+
+<div class="card">
+
+<h3>MISSION 01</h3>
+
+<p>
+
+Neutralize Joker
+
+</p>
+
+<button>
+
+Open File
+
+</button>
+
+</div>
+
+<div class="card">
+
+<h3>MISSION 02</h3>
+
+<p>
+
+Protect Gotham
+
+</p>
+
+<button>
+
+Open File
+
+</button>
+
+</div>
+
+<div class="card">
+
+<h3>MISSION 03</h3>
+
+<p>
+
+Birthday Surprise
+
+</p>
+
+<button>
+
+Decrypt
+
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- Gallery -->
+
+<section id="gallery">
+
+<h2>BAT ARCHIVES</h2>
+
+<div class="photos">
+
+<img src="assets/p1.jpg">
+
+<img src="assets/p2.jpg">
+
+<img src="assets/p3.jpg">
+
+<img src="assets/p4.jpg">
+
+</div>
+
+</section>
+
+<!-- Final -->
+
+<section id="ending">
+
+<h1>
+
+MISSION COMPLETE
+
+</h1>
+
+<p>
+
+Even The Dark Knight deserves one peaceful night.
+
+Happy Birthday ❤️
+
+</p>
+
+<button>
+
+END TRANSMISSION
+
+</button>
+
+</section>
+
+<audio id="rainSound" loop>
+
+<source src="assets/rain.mp3">
+
+</audio>
+
+<audio id="theme">
+
+<source src="assets/batman-theme.mp3">
+
+</audio>
+
+<audio id="thunder">
+
+<source src="assets/thunder.mp3">
+
+</audio>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
+/* ========================= */
+/* BATCOMPUTER LOADING SCREEN */
+/* ========================= */
+
+#loading{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:#000;
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:99999;
 }
 
-html{
-scroll-behavior:smooth;
+.terminal{
+width:700px;
+max-width:90%;
+padding:40px;
+background:#050505;
+border:2px solid rgba(255,215,0,.3);
+box-shadow:0 0 60px rgba(255,215,0,.2);
 }
 
-body{
-
-background:#050608;
-
-font-family:'Poppins',sans-serif;
-
-color:white;
-
-overflow-x:hidden;
-
+.terminal h1{
+color:#ffd700;
+font-size:42px;
+margin-bottom:10px;
 }
 
+.terminal h2{
+color:#888;
+margin-bottom:35px;
+}
 
-/* Background */
+.line{
+margin:30px 0;
+font-size:18px;
+color:#bbb;
+}
 
-body::before{
+.progress{
+width:100%;
+height:16px;
+background:#222;
+overflow:hidden;
+border-radius:30px;
+}
+
+#bar{
+width:0%;
+height:100%;
+background:linear-gradient(90deg,#ffcc00,#ffe76b,#ffcc00);
+}
+
+#loadingText{
+margin-top:20px;
+font-size:18px;
+color:#aaa;
+}
+
+/* ========================= */
+/* LIGHTNING */
+/* ========================= */
+
+#lightning{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:white;
+opacity:0;
+pointer-events:none;
+z-index:9000;
+}
+
+/* ========================= */
+/* RAIN */
+/* ========================= */
+
+#rain{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+pointer-events:none;
+overflow:hidden;
+z-index:5;
+}
+
+#rain::before{
 
 content:"";
 
-position:fixed;
-
-top:0;
-left:0;
-
-width:100%;
-height:100%;
-
-background:
-radial-gradient(circle at top,#15304d 0%,#050608 60%);
-
-z-index:-5;
-
-}
-
-
-/* Stars */
-
-.stars{
-
-position:fixed;
-
-top:0;
-left:0;
+position:absolute;
 
 width:100%;
 height:100%;
 
 background-image:
 
-radial-gradient(white 1px,transparent 1px),
-radial-gradient(#7ec8ff 1px,transparent 1px);
+linear-gradient(
+transparent,
+rgba(255,255,255,.25)
+);
 
-background-size:
+background-size:2px 25px;
 
-80px 80px,
-140px 140px;
+animation:rain 0.25s linear infinite;
 
-animation:
-
-starsMove 150s linear infinite;
-
-opacity:.6;
-
-z-index:-4;
+opacity:.45;
 
 }
 
-@keyframes starsMove{
+@keyframes rain{
 
 from{
 
-transform:translateY(0);
+transform:translateY(-100px);
 
 }
 
 to{
 
-transform:translateY(-1000px);
+transform:translateY(100px);
 
 }
 
 }
 
-
-/* Hero */
-
-.hero{
-
-height:100vh;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-position:relative;
-
-text-align:center;
-
-padding:20px;
-
-}
-
-
-/* Overlay */
-
-.overlay{
-
-position:absolute;
-
-inset:0;
-
-background:linear-gradient(
-
-to bottom,
-
-rgba(0,0,0,.2),
-
-rgba(0,0,0,.75)
-
-);
-
-}
-
-
-/* Hero Content */
-
-.hero-content{
-
-position:relative;
-
-z-index:10;
-
-}
-
-.hero h3{
-
-color:#67b8ff;
-
-letter-spacing:10px;
-
-font-size:15px;
-
-margin-bottom:25px;
-
-text-shadow:0 0 20px #008cff;
-
-}
-
-.hero h1{
-
-font-size:90px;
-
-font-family:'Orbitron',sans-serif;
-
-font-weight:900;
-
-text-shadow:
-
-0 0 10px #5ebcff,
-
-0 0 30px #1d8fff,
-
-0 0 60px #006eff;
-
-margin-bottom:20px;
-
-}
-
-.subtitle{
-
-font-size:22px;
-
-max-width:700px;
-
-line-height:1.7;
-
-color:#d8e6f8;
-
-margin:auto;
-
-}
-
-
-/* Button */
-
-button{
-
-margin-top:50px;
-
-padding:18px 45px;
-
-background:transparent;
-
-border:2px solid #42a5ff;
-
-color:white;
-
-font-size:18px;
-
-cursor:pointer;
-
-border-radius:50px;
-
-transition:.4s;
-
-font-family:'Orbitron',sans-serif;
-
-}
-
-button:hover{
-
-background:#42a5ff;
-
-box-shadow:
-
-0 0 15px #42a5ff,
-
-0 0 50px #42a5ff;
-
-transform:translateY(-5px);
-
-}
-
-
-/* Cards */
-
-.card{
-
-width:850px;
-
-max-width:90%;
-
-margin:120px auto;
-
-padding:50px;
-
-background:rgba(255,255,255,.05);
-
-backdrop-filter:blur(18px);
-
-border:1px solid rgba(255,255,255,.1);
-
-border-radius:25px;
-
-box-shadow:
-
-0 20px 70px rgba(0,0,0,.5);
-
-}
-
-.card h2{
-
-font-size:45px;
-
-margin-bottom:30px;
-
-font-family:'Orbitron';
-
-color:#78c5ff;
-
-}
-
-.card p{
-
-font-size:20px;
-
-margin:18px 0;
-
-color:#dfeeff;
-
-}
-
-
-/* Section */
-
-section{
-
-padding:80px 0;
-
-}
-
-.section-title{
-
-text-align:center;
-
-font-size:60px;
-
-margin-bottom:60px;
-
-font-family:'Orbitron';
-
-color:#72bfff;
-
-text-shadow:0 0 20px #3fa2ff;
-
-}
-
-
-/* Stats */
-
-.stats{
-
-display:grid;
-
-grid-template-columns:
-
-repeat(auto-fit,minmax(220px,1fr));
-
-gap:30px;
-
-width:90%;
-
-margin:auto;
-
-}
-
-.stat-card{
-
-padding:40px;
-
-background:rgba(255,255,255,.05);
-
-border-radius:20px;
-
-text-align:center;
-
-transition:.4s;
-
-border:1px solid rgba(255,255,255,.08);
-
-}
-
-.stat-card:hover{
-
-transform:translateY(-10px);
-
-box-shadow:
-
-0 0 40px rgba(66,165,255,.5);
-
-}
-
-.stat-card h3{
-
-font-size:20px;
-
-margin-bottom:20px;
-
-}
-
-.stat-card span{
-
-font-size:42px;
-
-font-weight:bold;
-
-font-family:'Orbitron';
-
-color:#6ec3ff;
-
-}
-
-
-/* Floating Music */
-
-#musicBtn{
+/* ========================= */
+/* FOG */
+/* ========================= */
+
+#fog1,
+#fog2{
 
 position:fixed;
 
-bottom:35px;
+bottom:0;
 
-right:35px;
+left:-50%;
 
-width:70px;
+width:200%;
 
-height:70px;
+height:300px;
 
-border-radius:50%;
+background:
 
-font-size:26px;
+radial-gradient(circle,
+rgba(255,255,255,.12),
+transparent 70%);
 
-z-index:1000;
+filter:blur(70px);
 
-}
+opacity:.4;
 
-
-/* Scrollbar */
-
-::-webkit-scrollbar{
-
-width:8px;
+pointer-events:none;
 
 }
 
-::-webkit-scrollbar-thumb{
+#fog1{
 
-background:#45a6ff;
-
-border-radius:20px;
+animation:fogMove 28s linear infinite;
 
 }
 
-::-webkit-scrollbar-track{
+#fog2{
 
-background:#050608;
+animation:fogMoveReverse 40s linear infinite;
 
-}
-
-/*==========================
-MISSIONS
-==========================*/
-
-.missions{
-
-padding:120px 8%;
+opacity:.25;
 
 }
 
-.mission-grid{
+@keyframes fogMove{
+
+0%{
+
+transform:translateX(-10%);
+
+}
+
+100%{
+
+transform:translateX(10%);
+
+}
+
+}
+
+@keyframes fogMoveReverse{
+
+0%{
+
+transform:translateX(10%);
+
+}
+
+100%{
+
+transform:translateX(-10%);
+
+}
+
+}
+
+/* ========================= */
+/* BATS */
+/* ========================= */
+
+.bat{
+
+position:fixed;
+
+font-size:40px;
+
+color:#222;
+
+animation:fly 18s linear infinite;
+
+opacity:.8;
+
+}
+
+.bat1{
+
+top:15%;
+left:-10%;
+
+animation-delay:0s;
+
+}
+
+.bat2{
+
+top:25%;
+left:-15%;
+
+animation-delay:4s;
+
+}
+
+.bat3{
+
+top:45%;
+left:-12%;
+
+animation-delay:8s;
+
+}
+
+.bat4{
+
+top:60%;
+left:-10%;
+
+animation-delay:12s;
+
+}
+
+.bat5{
+
+top:75%;
+left:-18%;
+
+animation-delay:15s;
+
+}
+
+@keyframes fly{
+
+0%{
+
+transform:translateX(0) translateY(0) scale(.6);
+
+}
+
+100%{
+
+transform:translateX(130vw) translateY(-150px) scale(1.4);
+
+}
+
+}
+
+/* ========================= */
+/* BAT SIGNAL */
+/* ========================= */
+
+.signal{
+
+position:fixed;
+
+top:40px;
+
+left:50%;
+
+transform:translateX(-50%);
+
+opacity:.18;
+
+animation:signalGlow 5s ease-in-out infinite;
+
+pointer-events:none;
+
+}
+
+.signal img{
+
+width:250px;
+
+filter:drop-shadow(0 0 35px gold);
+
+}
+
+@keyframes signalGlow{
+
+0%{
+
+opacity:.08;
+
+transform:translateX(-50%) scale(.95);
+
+}
+
+50%{
+
+opacity:.35;
+
+transform:translateX(-50%) scale(1.05);
+
+}
+
+100%{
+
+opacity:.08;
+
+transform:translateX(-50%) scale(.95);
+
+}
+
+}
+
+/* ========================= */
+/* GALLERY */
+/* ========================= */
+
+.photos{
 
 display:grid;
 
-grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
 
-gap:35px;
+gap:25px;
 
-margin-top:60px;
-
-}
-
-.mission-card{
-
-background:rgba(255,255,255,.05);
-
-border:1px solid rgba(82,177,255,.25);
-
-backdrop-filter:blur(15px);
-
-padding:35px;
-
-border-radius:20px;
-
-transition:.4s;
-
-position:relative;
-
-overflow:hidden;
+margin-top:50px;
 
 }
 
-.mission-card::before{
-
-content:"";
-
-position:absolute;
-
-left:-100%;
-
-top:0;
+.photos img{
 
 width:100%;
 
-height:100%;
+border-radius:18px;
 
-background:linear-gradient(
-90deg,
-transparent,
-rgba(255,255,255,.08),
-transparent
-);
+border:2px solid rgba(255,215,0,.2);
 
-transition:.8s;
+transition:.4s;
 
 }
 
-.mission-card:hover::before{
+.photos img:hover{
 
-left:100%;
+transform:scale(1.05);
 
-}
+border-color:gold;
 
-.mission-card:hover{
-
-transform:translateY(-10px);
-
-box-shadow:0 0 40px rgba(66,165,255,.4);
-
-}
-
-.mission-id{
-
-font-family:Orbitron;
-
-color:#64bcff;
-
-font-size:13px;
-
-letter-spacing:3px;
-
-}
-
-.mission-card h3{
-
-margin:20px 0;
-
-font-size:28px;
-
-}
-
-.mission-card p{
-
-line-height:1.8;
-
-color:#cfd9e7;
-
-}
-
-.status{
-
-margin-top:30px;
-
-display:inline-block;
-
-padding:10px 18px;
-
-border-radius:30px;
-
-font-weight:600;
-
-font-size:14px;
-
-}
-
-.success{
-
-background:#123b1d;
-
-color:#6fff8f;
-
-}
-
-.active{
-
-background:#113652;
-
-color:#6ec5ff;
-
-}
-
-.warning{
-
-background:#4d3906;
-
-color:#ffd76c;
+box-shadow:0 0 35px rgba(255,215,0,.5);
 
 }
