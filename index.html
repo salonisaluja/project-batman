@@ -7,93 +7,126 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>BATCOMPUTER</title>
+<title>Wayne Enterprises</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="style.css">
-
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 
 </head>
 
 <body>
 
-<!-- Rain -->
-<div id="rain"></div>
-
-<!-- Lightning -->
+<!-- LIGHTNING -->
 <div id="lightning"></div>
 
-<!-- Fog -->
-<div id="fog1"></div>
-<div id="fog2"></div>
+<!-- RAIN -->
+<div id="rain"></div>
 
-<!-- Flying Bats -->
-<div id="bats">
-<div class="bat bat1">🦇</div>
-<div class="bat bat2">🦇</div>
-<div class="bat bat3">🦇</div>
-<div class="bat bat4">🦇</div>
-<div class="bat bat5">🦇</div>
-</div>
+<!-- FOG -->
+<div class="fog fog1"></div>
+<div class="fog fog2"></div>
 
-<!-- Gotham -->
-<div class="city"></div>
+<!-- BAT SIGNAL -->
+<div class="batSignal"></div>
 
-<!-- Moon -->
+<!-- GOTHAM -->
+<div class="gotham"></div>
+
+<!-- MOON -->
 <div class="moon"></div>
 
-<!-- Bat Signal -->
-<div class="signal">
+<!-- LOADING SCREEN -->
 
-<img src="assets/logo.png">
-
-</div>
-
-<!-- Loading Screen -->
-
-<section id="loading">
+<section id="loadingScreen">
 
 <div class="terminal">
 
-<h1>WAYNE ENTERPRISES</h1>
+<div class="terminalHeader">
 
-<h2>BATCOMPUTER v9.8</h2>
+<div class="dot red"></div>
 
-<div class="line">
-<span>> Connecting...</span>
+<div class="dot yellow"></div>
+
+<div class="dot green"></div>
+
+<span>
+
+WAYNE ENTERPRISES • BATCOMPUTER
+
+</span>
+
 </div>
+
+<div class="terminalBody">
+
+<p class="line">Initializing Wayne Enterprises...</p>
+
+<p class="line">Connecting to Batcave...</p>
+
+<p class="line">Loading Gotham Security...</p>
+
+<p class="line">Decrypting Mission Files...</p>
+
+<p class="line">Connecting Batmobile...</p>
+
+<p class="line">Checking Alfred Protocol...</p>
+
+<p class="line">Scanning Criminal Database...</p>
+
+<p class="line success">
+
+ACCESS GRANTED
+
+</p>
 
 <div class="progress">
 
-<div id="bar"></div>
+<div id="progressBar"></div>
 
 </div>
 
-<p id="loadingText">
-
-Initializing...
-
-</p>
+</div>
 
 </div>
 
 </section>
 
-<!-- Hero -->
+<!-- HERO -->
 
 <section id="hero">
 
-<h3>WELCOME BACK</h3>
+<div class="overlay"></div>
 
-<h1>BATMAN</h1>
+<div class="heroContent">
+
+<h3>
+
+WAYNE ENTERPRISES
+
+</h3>
+
+<h1>
+
+WELCOME BACK
+
+BATMAN
+
+</h1>
 
 <p>
 
-GOTHAM CITY NEEDS ITS HERO...
+GOTHAM NEVER SLEEPS.
+
+THE CITY NEEDS ITS HERO.
 
 BUT TONIGHT...
 
-IT IS YOUR BIRTHDAY.
+THE MISSION IS DIFFERENT.
 
 </p>
 
@@ -103,135 +136,63 @@ ENTER THE BATCAVE
 
 </button>
 
-</section>
-
-<!-- Missions -->
-
-<section id="missions">
-
-<h2>MISSIONS</h2>
-
-<div class="cards">
-
-<div class="card">
-
-<h3>MISSION 01</h3>
-
-<p>
-
-Neutralize Joker
-
-</p>
-
-<button>
-
-Open File
-
-</button>
-
-</div>
-
-<div class="card">
-
-<h3>MISSION 02</h3>
-
-<p>
-
-Protect Gotham
-
-</p>
-
-<button>
-
-Open File
-
-</button>
-
-</div>
-
-<div class="card">
-
-<h3>MISSION 03</h3>
-
-<p>
-
-Birthday Surprise
-
-</p>
-
-<button>
-
-Decrypt
-
-</button>
-
-</div>
-
 </div>
 
 </section>
 
-<!-- Gallery -->
+<!-- BATCOMPUTER PANEL -->
 
-<section id="gallery">
+<div class="hud">
 
-<h2>BAT ARCHIVES</h2>
+<div class="hudBox">
 
-<div class="photos">
+<h4>STATUS</h4>
 
-<img src="assets/p1.jpg">
-
-<img src="assets/p2.jpg">
-
-<img src="assets/p3.jpg">
-
-<img src="assets/p4.jpg">
+<p>ONLINE</p>
 
 </div>
 
-</section>
+<div class="hudBox">
 
-<!-- Final -->
+<h4>BATMOBILE</h4>
 
-<section id="ending">
+<p>READY</p>
 
-<h1>
+</div>
 
-MISSION COMPLETE
+<div class="hudBox">
 
-</h1>
+<h4>ALFRED</h4>
 
-<p>
+<p>CONNECTED</p>
 
-Even The Dark Knight deserves one peaceful night.
+</div>
 
-Happy Birthday ❤️
+<div class="hudBox">
 
-</p>
+<h4>CITY</h4>
 
-<button>
+<p>GOTHAM</p>
 
-END TRANSMISSION
+</div>
 
-</button>
-
-</section>
+</div>
 
 <audio id="rainSound" loop>
 
-<source src="assets/rain.mp3">
+<source src="assets/audio/rain.mp3">
+
+</audio>
+
+<audio id="thunderSound">
+
+<source src="assets/audio/thunder.mp3">
 
 </audio>
 
 <audio id="theme">
 
-<source src="assets/batman-theme.mp3">
-
-</audio>
-
-<audio id="thunder">
-
-<source src="assets/thunder.mp3">
+<source src="assets/audio/theme.mp3">
 
 </audio>
 
