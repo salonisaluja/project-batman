@@ -1,127 +1,242 @@
-<section class="hero">
+<!DOCTYPE html>
+<html lang="en">
 
-    <div class="moon"></div>
+<head>
 
-    <div class="bat-signal"></div>
+<meta charset="UTF-8">
 
-    <div class="rain"></div>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <div class="stars"></div>
+<title>BATCOMPUTER</title>
 
-    <div class="fog"></div>
+<link rel="stylesheet" href="style.css">
 
-    <div class="gotham"></div>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 
-    <div class="overlay"></div>
+</head>
 
-    <div class="hero-content">
+<body>
 
-        <p class="classified">
-            WAYNE ENTERPRISES
-        </p>
+<!-- Rain -->
+<div id="rain"></div>
 
-        <h1 id="typing-title">
-            WELCOME BACK,<br>BATMAN
-        </h1>
+<!-- Lightning -->
+<div id="lightning"></div>
 
-        <p class="subtitle">
-            PROJECT1109 has successfully verified your identity.
-            <br><br>
-            Access to confidential files has been granted.
-        </p>
+<!-- Fog -->
+<div id="fog1"></div>
+<div id="fog2"></div>
 
-        <button id="enterButton">
+<!-- Flying Bats -->
+<div id="bats">
+<div class="bat bat1">🦇</div>
+<div class="bat bat2">🦇</div>
+<div class="bat bat3">🦇</div>
+<div class="bat bat4">🦇</div>
+<div class="bat bat5">🦇</div>
+</div>
 
-            ACCESS BATCOMPUTER
+<!-- Gotham -->
+<div class="city"></div>
 
-        </button>
+<!-- Moon -->
+<div class="moon"></div>
 
-    </div>
+<!-- Bat Signal -->
+<div class="signal">
+
+<img src="assets/logo.png">
+
+</div>
+
+<!-- Loading Screen -->
+
+<section id="loading">
+
+<div class="terminal">
+
+<h1>WAYNE ENTERPRISES</h1>
+
+<h2>BATCOMPUTER v9.8</h2>
+
+<div class="line">
+<span>> Connecting...</span>
+</div>
+
+<div class="progress">
+
+<div id="bar"></div>
+
+</div>
+
+<p id="loadingText">
+
+Initializing...
+
+</p>
+
+</div>
+
+</section>
+
+<!-- Hero -->
+
+<section id="hero">
+
+<h3>WELCOME BACK</h3>
+
+<h1>BATMAN</h1>
+
+<p>
+
+GOTHAM CITY NEEDS ITS HERO...
+
+BUT TONIGHT...
+
+IT IS YOUR BIRTHDAY.
+
+</p>
+
+<button id="enter">
+
+ENTER THE BATCAVE
+
+</button>
 
 </section>
 
-<!-- ========================= -->
-<!-- MISSION FILES -->
-<!-- ========================= -->
+<!-- Missions -->
 
-<section class="missions">
+<section id="missions">
 
-    <h2 class="section-title">MISSION FILES</h2>
+<h2>MISSIONS</h2>
 
-    <div class="mission-grid">
+<div class="cards">
 
-        <div class="mission-card">
+<div class="card">
 
-            <span class="mission-id">
-                MISSION 001
-            </span>
+<h3>MISSION 01</h3>
 
-            <h3>Identity Verification</h3>
+<p>
 
-            <p>
-                Subject successfully identified as Batman.
-            </p>
+Neutralize Joker
 
-            <div class="status success">
-                ✓ COMPLETED
-            </div>
+</p>
 
-        </div>
+<button>
 
-        <div class="mission-card">
+Open File
 
-            <span class="mission-id">
-                MISSION 002
-            </span>
+</button>
 
-            <h3>Protect Her Smile</h3>
+</div>
 
-            <p>
-                Continue making your girlfriend smile every single day.
-            </p>
+<div class="card">
 
-            <div class="status active">
-                ● ACTIVE
-            </div>
+<h3>MISSION 02</h3>
 
-        </div>
+<p>
 
-        <div class="mission-card">
+Protect Gotham
 
-            <span class="mission-id">
-                MISSION 003
-            </span>
+</p>
 
-            <h3>Unlimited Hugs</h3>
+<button>
 
-            <p>
-                Deliver emergency hugs whenever requested.
-            </p>
+Open File
 
-            <div class="status success">
-                ✓ COMPLETED
-            </div>
+</button>
 
-        </div>
+</div>
 
-        <div class="mission-card">
+<div class="card">
 
-            <span class="mission-id">
-                MISSION 004
-            </span>
+<h3>MISSION 03</h3>
 
-            <h3>Defeat Overthinking</h3>
+<p>
 
-            <p>
-                Neutralize girlfriend's overthinking with patience, reassurance and cuddles.
-            </p>
+Birthday Surprise
 
-            <div class="status warning">
-                IN PROGRESS
-            </div>
+</p>
 
-        </div>
+<button>
 
-    </div>
+Decrypt
+
+</button>
+
+</div>
+
+</div>
 
 </section>
+
+<!-- Gallery -->
+
+<section id="gallery">
+
+<h2>BAT ARCHIVES</h2>
+
+<div class="photos">
+
+<img src="assets/p1.jpg">
+
+<img src="assets/p2.jpg">
+
+<img src="assets/p3.jpg">
+
+<img src="assets/p4.jpg">
+
+</div>
+
+</section>
+
+<!-- Final -->
+
+<section id="ending">
+
+<h1>
+
+MISSION COMPLETE
+
+</h1>
+
+<p>
+
+Even The Dark Knight deserves one peaceful night.
+
+Happy Birthday ❤️
+
+</p>
+
+<button>
+
+END TRANSMISSION
+
+</button>
+
+</section>
+
+<audio id="rainSound" loop>
+
+<source src="assets/rain.mp3">
+
+</audio>
+
+<audio id="theme">
+
+<source src="assets/batman-theme.mp3">
+
+</audio>
+
+<audio id="thunder">
+
+<source src="assets/thunder.mp3">
+
+</audio>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
