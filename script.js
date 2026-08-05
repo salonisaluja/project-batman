@@ -1,27 +1,19 @@
-/* =========================================================
-   WAYNE ENTERPRISES // BATCOMPUTER — APPLICATION LOGIC
-   Vanilla JS. No dependencies required.
-   ========================================================= */
-(() => {
+(function() {
   'use strict';
 
-  /* ---------------------------------------------------------
-     0. STATE & DOM REFERENCES
-  --------------------------------------------------------- */
-  const state = {
+  var state = {
     audioEnabled: true,
     stormActive: true,
     currentPage: 'page-boot',
     mission3Unlocked: false
   };
 
-  const $ = (sel, ctx = document) => ctx.querySelector(sel);
-  const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
+  function $(sel, ctx) { return (ctx || document).querySelector(sel); }
+  function $$(sel, ctx) { return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); }
 
-  const pages = $$('.page');
-  const pageDots = $$('.dot');
+  var pageDots = $$('.dot');
 
-  const audio = {
+  var audio = {
     rain: $('#audio-rain'),
     thunder: $('#audio-thunder'),
     click: $('#audio-click'),
@@ -30,90 +22,87 @@
     access: $('#audio-access')
   };
 
-  /* ---------------------------------------------------------
-     1. SAFE AUDIO HELPERS
-     All audio is optional — if a file is missing from
-     assets/audio/, playback simply fails silently.
-  --------------------------------------------------------- */
-  function safePlay(el, { loop = false, volume = 1, restart = false } = {}) {
+  function safePlay(el, opts) {
+    opts = opts || {};
     if (!el || !state.audioEnabled) return;
     try {
-      el.loop = loop;
-      el.volume = volume;
-      if (restart) el.currentTime = 0;
-      const p = el.play();
-      if (p && p.catch) p.catch(() => {});
-    } catch (e) { /* ignore */ }
+      el.loop = !!opts.loop;
+      el.volume = opts.volume === undefined ? 1 : opts.volume;
+      if (opts.restart) el.currentTime = 0;
+      var p = el.play();
+      if (p && p.catch) p.catch(function(){});
+    } catch (e) {}
   }
 
   function safePause(el) {
     if (!el) return;
-    try { el.pause(); } catch (e) { /* ignore */ }
+    try { el.pause(); } catch (e) {}
   }
 
   function toggleAudio() {
     state.audioEnabled = !state.audioEnabled;
-    const icon = $('.audio-icon');
+    var icon = $('.audio-icon');
     if (state.audioEnabled) {
-      icon.textContent = '🔊';
-      if (state.stormActive) safePlay(audio.rain, { loop: true, volume: .35 });
-      else safePlay(audio.theme, { loop: true, volume: .3 });
+      icon.textContent = 'SOUND: ON';
+      if (state.stormActive) safePlay(audio.rain, { loop: true, volume: 0.35 });
+      else safePlay(audio.theme, { loop: true, volume: 0.3 });
     } else {
-      icon.textContent = '🔇';
-      Object.values(audio).forEach(safePause);
+      icon.textContent = 'SOUND: OFF';
+      for (var key in audio) { safePause(audio[key]); }
     }
   }
   $('#audio-toggle').addEventListener('click', toggleAudio);
 
-  /* ---------------------------------------------------------
-     2. TYPEWRITER UTILITY
-  --------------------------------------------------------- */
-  function typeText(el, text, speed = 28) {
-    return new Promise(resolve => {
+  function wait(ms) { return new Promise(function(resolve) { setTimeout(resolve, ms); }); }
+
+  function typeText(el, text, speed) {
+    speed = speed || 28;
+    return new Promise(function(resolve) {
       el.textContent = '';
-      let i = 0;
-      const tick = () => {
+      var i = 0;
+      function tick() {
         if (i < text.length) {
           el.textContent += text.charAt(i);
-          if (i % 3 === 0) safePlay(audio.type, { volume: .12, restart: true });
+          if (i % 3 === 0) safePlay(audio.type, { volume: 0.12, restart: true });
           i++;
           setTimeout(tick, speed);
         } else {
           resolve();
         }
-      };
+      }
       tick();
     });
   }
 
-  async function typeSequence(lines, speed = 22, gap = 260) {
-    for (const { el, text } of lines) {
-      await typeText(el, text, speed);
-      await wait(gap);
-    }
+  function typeSequence(lines, speed, gap) {
+    speed = speed || 22;
+    gap = gap || 260;
+    var chain = Promise.resolve();
+    lines.forEach(function(line) {
+      chain = chain.then(function() { return typeText(line.el, line.text, speed); })
+                    .then(function() { return wait(gap); });
+    });
+    return chain;
   }
 
-  function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
-
-  /* ---------------------------------------------------------
-     3. PAGE TRANSITIONS
-  --------------------------------------------------------- */
   function goToPage(id) {
-    const current = $('.page.active');
-    const next = document.getElementById(id);
+    var current = $('.page.active');
+    var next = document.getElementById(id);
     if (!next || current === next) return;
 
     if (current) {
       current.classList.add('leaving');
       current.classList.remove('active');
-      setTimeout(() => current.classList.remove('leaving'), 900);
+      setTimeout(function() { current.classList.remove('leaving'); }, 900);
     }
     next.classList.add('active');
     state.currentPage = id;
-    window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
     next.scrollTop = 0;
+    window.scrollTo(0, 0);
 
-    pageDots.forEach(d => d.classList.toggle('active', d.dataset.page === id));
+    pageDots.forEach(function(d) {
+      d.classList.toggle('active', d.dataset.page === id);
+    });
 
     if (id === 'page-dossier') initDossier();
     if (id === 'page-missions') initMissions();
@@ -121,29 +110,17 @@
     if (id === 'page-vault') initVault();
   }
 
-  pageDots.forEach(dot => {
-    dot.addEventListener('click', () => {
-      // Only allow navigating to already-unlocked/visited-ish pages for a smooth UX
-      goToPage(dot.dataset.page);
-    });
+  pageDots.forEach(function(dot) {
+    dot.addEventListener('click', function() { goToPage(dot.dataset.page); });
   });
 
-  /* ---------------------------------------------------------
-     4. RAIN CANVAS
-  --------------------------------------------------------- */
-  const rainCanvas = $('#fx-rain');
-  const rctx = rainCanvas.getContext('2d');
-  let raindrops = [];
+  var rainCanvas = $('#fx-rain');
+  var rctx = rainCanvas.getContext('2d');
+  var raindrops = [];
 
   function sizeCanvas(canvas) {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-  }
-
-  function initRain() {
-    sizeCanvas(rainCanvas);
-    const count = Math.floor((window.innerWidth * window.innerHeight) / 9000);
-    raindrops = Array.from({ length: count }, () => spawnDrop());
   }
 
   function spawnDrop() {
@@ -157,12 +134,19 @@
     };
   }
 
+  function initRain() {
+    sizeCanvas(rainCanvas);
+    var count = Math.floor((window.innerWidth * window.innerHeight) / 9000);
+    raindrops = [];
+    for (var i = 0; i < count; i++) raindrops.push(spawnDrop());
+  }
+
   function drawRain() {
     rctx.clearRect(0, 0, rainCanvas.width, rainCanvas.height);
     if (state.stormActive) {
       rctx.strokeStyle = 'rgba(180,210,230,0.5)';
       rctx.lineWidth = 1;
-      raindrops.forEach(d => {
+      raindrops.forEach(function(d) {
         rctx.globalAlpha = d.alpha;
         rctx.beginPath();
         rctx.moveTo(d.x, d.y);
@@ -180,20 +164,17 @@
     requestAnimationFrame(drawRain);
   }
 
-  window.addEventListener('resize', () => {
+  window.addEventListener('resize', function() {
     sizeCanvas(rainCanvas);
     sizeCanvas(confettiCanvas);
   });
 
-  /* ---------------------------------------------------------
-     5. LIGHTNING + THUNDER
-  --------------------------------------------------------- */
-  const lightningEl = $('#fx-lightning');
-  let lightningTimer = null;
+  var lightningEl = $('#fx-lightning');
+  var lightningTimer = null;
 
   function scheduleLightning() {
-    const delay = 5000 + Math.random() * 9000;
-    lightningTimer = setTimeout(() => {
+    var delay = 5000 + Math.random() * 9000;
+    lightningTimer = setTimeout(function() {
       if (state.stormActive) strikeLightning();
       scheduleLightning();
     }, delay);
@@ -201,27 +182,24 @@
 
   function strikeLightning() {
     lightningEl.classList.remove('flash');
-    void lightningEl.offsetWidth; // reflow to restart animation
+    void lightningEl.offsetWidth;
     lightningEl.classList.add('flash');
-    safePlay(audio.thunder, { volume: .3, restart: true });
+    safePlay(audio.thunder, { volume: 0.3, restart: true });
   }
 
-  /* ---------------------------------------------------------
-     6. EMBERS (used on the birthday page for warm atmosphere)
-  --------------------------------------------------------- */
-  const embersEl = $('#fx-embers');
-  let emberInterval = null;
+  var embersEl = $('#fx-embers');
+  var emberInterval = null;
 
   function startEmbers() {
     stopEmbers();
-    emberInterval = setInterval(() => {
-      const ember = document.createElement('div');
+    emberInterval = setInterval(function() {
+      var ember = document.createElement('div');
       ember.className = 'ember';
-      ember.style.left = Math.random() * 100 + 'vw';
+      ember.style.left = (Math.random() * 100) + 'vw';
       ember.style.setProperty('--drift', (Math.random() * 80 - 40) + 'px');
       ember.style.animationDuration = (6 + Math.random() * 6) + 's';
       embersEl.appendChild(ember);
-      setTimeout(() => ember.remove(), 13000);
+      setTimeout(function() { ember.remove(); }, 13000);
     }, 350);
   }
   function stopEmbers() {
@@ -229,18 +207,16 @@
     embersEl.innerHTML = '';
   }
 
-  /* ---------------------------------------------------------
-     7. CONFETTI CANVAS
-  --------------------------------------------------------- */
-  const confettiCanvas = $('#fx-confetti');
-  const cctx = confettiCanvas.getContext('2d');
-  let confettiParticles = [];
-  let confettiRunning = false;
-  const confettiColors = ['#f2c14e', '#4fd8ff', '#d3232f', '#f4e3b2', '#ffffff'];
+  var confettiCanvas = $('#fx-confetti');
+  var cctx = confettiCanvas.getContext('2d');
+  var confettiParticles = [];
+  var confettiRunning = false;
+  var confettiColors = ['#f2c14e', '#4fd8ff', '#d3232f', '#f4e3b2', '#ffffff'];
 
-  function burstConfetti(count = 160) {
+  function burstConfetti(count) {
+    count = count || 160;
     sizeCanvas(confettiCanvas);
-    for (let i = 0; i < count; i++) {
+    for (var i = 0; i < count; i++) {
       confettiParticles.push({
         x: Math.random() * confettiCanvas.width,
         y: -20 - Math.random() * confettiCanvas.height * 0.4,
@@ -263,7 +239,7 @@
 
   function drawConfetti() {
     cctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
-    confettiParticles.forEach(p => {
+    confettiParticles.forEach(function(p) {
       p.x += p.speedX;
       p.y += p.speedY;
       p.rot += p.rotSpeed;
@@ -276,7 +252,9 @@
       cctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
       cctx.restore();
     });
-    confettiParticles = confettiParticles.filter(p => p.life < p.maxLife && p.y < confettiCanvas.height + 40);
+    confettiParticles = confettiParticles.filter(function(p) {
+      return p.life < p.maxLife && p.y < confettiCanvas.height + 40;
+    });
     if (confettiParticles.length > 0) {
       requestAnimationFrame(drawConfetti);
     } else {
@@ -285,43 +263,40 @@
     }
   }
 
-  // Gentle continuous confetti trickle on the birthday page
-  let confettiTrickle = null;
+  var confettiTrickle = null;
   function startConfettiTrickle() {
     stopConfettiTrickle();
-    confettiTrickle = setInterval(() => burstConfetti(14), 900);
+    confettiTrickle = setInterval(function() { burstConfetti(14); }, 900);
   }
   function stopConfettiTrickle() {
     if (confettiTrickle) clearInterval(confettiTrickle);
   }
 
-  /* ---------------------------------------------------------
-     8. PAGE 1 — BOOT SEQUENCE
-  --------------------------------------------------------- */
-  const startGate = $('#start-gate');
-  const startBtn = $('#start-btn');
-  const enterBatcaveBtn = $('#enter-batcave');
-  const loadingFill = $('#loading-fill');
-  const loadingPercent = $('#loading-percent');
-  const accessBanner = $('#access-banner');
+  var startGate = $('#start-gate');
+  var startBtn = $('#start-btn');
+  var enterBatcaveBtn = $('#enter-batcave');
+  var loadingFill = $('#loading-fill');
+  var loadingPercent = $('#loading-percent');
+  var accessBanner = $('#access-banner');
 
-  startBtn.addEventListener('click', () => {
-    safePlay(audio.click, { volume: .5, restart: true });
+  startBtn.addEventListener('click', function onStart() {
+    safePlay(audio.click, { volume: 0.5, restart: true });
     startGate.classList.add('hide');
     beginBoot();
-  }, { once: true });
+    startBtn.removeEventListener('click', onStart);
+  });
 
   function beginBoot() {
-    // Ambient storm audio begins here (first user gesture) to satisfy autoplay policies
-    safePlay(audio.rain, { loop: true, volume: .35 });
+    safePlay(audio.rain, { loop: true, volume: 0.35 });
     scheduleLightning();
 
-    const termLines = $$('#terminal .term-line').map(el => ({ el, text: el.dataset.text }));
+    var termLines = $$('#terminal .term-line').map(function(el) {
+      return { el: el, text: el.dataset.text };
+    });
     typeSequence(termLines, 16, 180);
 
-    // Loading bar animation, roughly synced with terminal lines
-    let pct = 0;
-    const loadTimer = setInterval(() => {
+    var pct = 0;
+    var loadTimer = setInterval(function() {
       pct += Math.random() * 6 + 2;
       if (pct >= 100) {
         pct = 100;
@@ -334,44 +309,39 @@
   }
 
   function onBootComplete() {
-    setTimeout(() => {
-      safePlay(audio.access, { volume: .5, restart: true });
+    setTimeout(function() {
+      safePlay(audio.access, { volume: 0.5, restart: true });
       accessBanner.classList.add('show');
-      setTimeout(() => enterBatcaveBtn.classList.add('show'), 400);
+      setTimeout(function() { enterBatcaveBtn.classList.add('show'); }, 400);
     }, 400);
   }
 
-  enterBatcaveBtn.addEventListener('click', () => {
-    safePlay(audio.click, { volume: .5, restart: true });
+  enterBatcaveBtn.addEventListener('click', function() {
+    safePlay(audio.click, { volume: 0.5, restart: true });
     goToPage('page-dossier');
   });
 
-  /* ---------------------------------------------------------
-     9. PAGE 2 — DOSSIER
-  --------------------------------------------------------- */
-  let dossierInitialized = false;
+  var dossierInitialized = false;
   function initDossier() {
     if (dossierInitialized) return;
     dossierInitialized = true;
 
-    const caption = $('#render-caption');
-    typeText(caption, 'IDENTITY CONFIRMED: BRUCE WAYNE — THREAT LEVEL: LEGENDARY', 20);
+    var caption = $('#render-caption');
+    typeText(caption, 'IDENTITY CONFIRMED: BRUCE WAYNE - THREAT LEVEL: LEGENDARY', 20);
 
-    // Type each profile value
-    const rows = $$('#profile-list dd');
-    let delay = 500;
-    rows.forEach(dd => {
-      setTimeout(() => typeText(dd, dd.dataset.type, 30), delay);
+    var rows = $$('#profile-list dd');
+    var delay = 500;
+    rows.forEach(function(dd) {
+      setTimeout(function() { typeText(dd, dd.dataset.type, 30); }, delay);
       delay += 550;
     });
 
-    // Animate skill bars once visible
-    setTimeout(() => {
-      $$('#skills .skill-row').forEach((row, i) => {
-        setTimeout(() => {
-          const value = parseInt(row.dataset.value, 10);
-          const fill = row.querySelector('.skill-fill');
-          const pctEl = row.querySelector('.skill-pct');
+    setTimeout(function() {
+      $$('#skills .skill-row').forEach(function(row, i) {
+        setTimeout(function() {
+          var value = parseInt(row.dataset.value, 10);
+          var fill = row.querySelector('.skill-fill');
+          var pctEl = row.querySelector('.skill-pct');
           fill.style.width = value + '%';
           animateCount(pctEl, value);
         }, i * 220);
@@ -380,84 +350,76 @@
   }
 
   function animateCount(el, target) {
-    let current = 0;
-    const step = Math.max(1, Math.round(target / 30));
-    const timer = setInterval(() => {
+    var current = 0;
+    var step = Math.max(1, Math.round(target / 30));
+    var timer = setInterval(function() {
       current += step;
       if (current >= target) { current = target; clearInterval(timer); }
       el.textContent = current + '%';
     }, 30);
   }
 
-  $('#goto-missions').addEventListener('click', () => {
-    safePlay(audio.click, { volume: .5, restart: true });
+  $('#goto-missions').addEventListener('click', function() {
+    safePlay(audio.click, { volume: 0.5, restart: true });
     goToPage('page-missions');
   });
 
-  /* ---------------------------------------------------------
-     10. PAGE 3 — MISSIONS
-  --------------------------------------------------------- */
-  let missionsInitialized = false;
+  var missionsInitialized = false;
   function initMissions() {
     if (missionsInitialized) return;
     missionsInitialized = true;
-
-    const mission3 = $('#mission-3');
-    mission3.addEventListener('click', unlockMission3);
+    $('#mission-3').addEventListener('click', unlockMission3);
   }
 
-  async function unlockMission3() {
+  function unlockMission3() {
     if (state.mission3Unlocked) return;
     state.mission3Unlocked = true;
 
-    safePlay(audio.click, { volume: .5, restart: true });
+    safePlay(audio.click, { volume: 0.5, restart: true });
 
-    const card = $('#mission-3');
+    var card = $('#mission-3');
     card.classList.remove('locked');
     card.classList.add('unlocked');
     card.querySelector('.mission-status-light').classList.remove('red');
     card.querySelector('.mission-status-light').classList.add('green');
     card.querySelector('.mission-status-light').style.animation = 'none';
     card.querySelector('.mission-state span').textContent = 'DECRYPTING...';
-    card.querySelector('.mission-icon').textContent = '🔓';
+    card.querySelector('.mission-icon').textContent = 'UNLOCKED';
 
-    const folder = $('#folder-anim');
+    var folder = $('#folder-anim');
     folder.classList.add('show');
     folder.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-    await wait(900);
-
-    const docLines = $$('#doc-terminal .term-line').map(el => ({ el, text: el.dataset.text }));
-    await typeSequence(docLines, 24, 320);
-
-    card.querySelector('.mission-state span').textContent = 'DECRYPTED';
-
-    await wait(400);
-    $('#doc-complete').classList.add('show');
-
-    const continueBtn = $('#goto-birthday');
-    continueBtn.disabled = false;
-    continueBtn.classList.add('show');
+    wait(900).then(function() {
+      var docLines = $$('#doc-terminal .term-line').map(function(el) {
+        return { el: el, text: el.dataset.text };
+      });
+      return typeSequence(docLines, 24, 320);
+    }).then(function() {
+      card.querySelector('.mission-state span').textContent = 'DECRYPTED';
+      return wait(400);
+    }).then(function() {
+      $('#doc-complete').classList.add('show');
+      var continueBtn = $('#goto-birthday');
+      continueBtn.disabled = false;
+      continueBtn.classList.add('show');
+    });
   }
 
-  $('#goto-birthday').addEventListener('click', () => {
+  $('#goto-birthday').addEventListener('click', function() {
     if ($('#goto-birthday').disabled) return;
-    safePlay(audio.click, { volume: .5, restart: true });
+    safePlay(audio.click, { volume: 0.5, restart: true });
     goToPage('page-birthday');
   });
 
-  /* ---------------------------------------------------------
-     11. PAGE 4 — BIRTHDAY
-  --------------------------------------------------------- */
-  let birthdayInitialized = false;
+  var birthdayInitialized = false;
   function initBirthday() {
-    // Stop the storm, every time this page is entered (cheap + idempotent)
     state.stormActive = false;
     document.body.classList.add('storm-off');
     clearTimeout(lightningTimer);
     safePause(audio.rain);
     safePause(audio.thunder);
-    safePlay(audio.theme, { loop: true, volume: .28 });
+    safePlay(audio.theme, { loop: true, volume: 0.28 });
 
     startEmbers();
     startConfettiTrickle();
@@ -466,45 +428,41 @@
     if (birthdayInitialized) return;
     birthdayInitialized = true;
 
-    const alfredText = $('#alfred-text');
-    const message = "You've spent your life making sure everyone else's world stays safe. Today, let the world take care of you. Master Wayne — I could not be prouder to serve you. Happy Birthday.";
-    setTimeout(() => typeText(alfredText, message, 18), 1800);
+    var alfredText = $('#alfred-text');
+    var message = "You've spent your life making sure everyone else's world stays safe. Today, let the world take care of you. Master Wayne - I could not be prouder to serve you. Happy Birthday.";
+    setTimeout(function() { typeText(alfredText, message, 18); }, 1800);
 
-    $('#blow-candle').addEventListener('click', () => {
-      safePlay(audio.click, { volume: .5, restart: true });
+    $('#blow-candle').addEventListener('click', function() {
+      safePlay(audio.click, { volume: 0.5, restart: true });
       $('.flame').classList.toggle('lit');
       burstConfetti(60);
     });
   }
 
-  $('#goto-vault').addEventListener('click', () => {
-    safePlay(audio.click, { volume: .5, restart: true });
+  $('#goto-vault').addEventListener('click', function() {
+    safePlay(audio.click, { volume: 0.5, restart: true });
     stopConfettiTrickle();
     goToPage('page-vault');
   });
 
-  /* ---------------------------------------------------------
-     12. PAGE 5 — MEMORY VAULT
-  --------------------------------------------------------- */
-  let vaultInitialized = false;
+  var vaultInitialized = false;
   function initVault() {
     if (vaultInitialized) return;
     vaultInitialized = true;
 
-    // Resolve photo slots: try to load a real image, fall back to a styled placeholder
-    $$('.photo-slot').forEach(slot => {
-      const src = slot.dataset.src;
-      const caption = slot.dataset.caption;
-      const img = new Image();
+    $$('.photo-slot').forEach(function(slot) {
+      var src = slot.dataset.src;
+      var caption = slot.dataset.caption;
+      var img = new Image();
       img.alt = caption;
-      img.onload = () => {
+      img.onload = function() {
         slot.appendChild(img);
         appendCaption(slot, caption);
       };
-      img.onerror = () => {
-        const mark = document.createElement('div');
+      img.onerror = function() {
+        var mark = document.createElement('div');
         mark.className = 'placeholder-mark';
-        mark.textContent = 'NO IMAGE ON FILE — ADD ' + src.split('/').pop() + ' TO assets/images/';
+        mark.textContent = 'NO IMAGE ON FILE - ADD ' + src.split('/').pop() + ' TO assets/images/';
         slot.appendChild(mark);
         appendCaption(slot, caption);
       };
@@ -512,10 +470,53 @@
     });
 
     function appendCaption(slot, caption) {
-      const cap = document.createElement('div');
+      var cap = document.createElement('div');
       cap.className = 'cap';
       cap.textContent = caption;
       slot.appendChild(cap);
     }
 
-    // Reveal photo slots + text lines on
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    $$('.photo-slot').forEach(function(slot) { observer.observe(slot); });
+
+    var vtLines = $$('#vault-text .vt-line');
+    var vtObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          vtObserver.disconnect();
+          var chain = Promise.resolve();
+          vtLines.forEach(function(line) {
+            chain = chain.then(function() {
+              line.classList.add('revealed');
+              return typeText(line, line.dataset.text, 26);
+            }).then(function() { return wait(300); });
+          });
+          chain.then(revealFinal);
+        }
+      });
+    }, { threshold: 0.4 });
+    vtObserver.observe($('#vault-text'));
+
+    function revealFinal() {
+      setTimeout(function() {
+        $('#mission-complete-final').classList.add('show');
+      }, 500);
+    }
+
+    $('#restart-btn').addEventListener('click', function() {
+      window.location.reload();
+    });
+  }
+
+  initRain();
+  sizeCanvas(confettiCanvas);
+  requestAnimationFrame(drawRain);
+
+})();
