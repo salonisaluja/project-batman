@@ -6,20 +6,15 @@
 <title>WAYNE ENTERPRISES // BATCOMPUTER ACCESS</title>
 <meta name="description" content="A classified Batcomputer birthday transmission.">
 
-<!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 
-<!-- Styles -->
 <link rel="stylesheet" href="style.css">
-
-<!-- Favicon (optional user-supplied) -->
 <link rel="icon" href="assets/icons/favicon.png" type="image/png">
 </head>
 <body>
 
-<!-- ================= AMBIENT / GLOBAL FX LAYERS ================= -->
 <canvas id="fx-rain" class="fx-layer"></canvas>
 <div id="fx-lightning" class="fx-layer"></div>
 <div id="fx-fog" class="fx-layer" aria-hidden="true">
@@ -32,9 +27,8 @@
 <div id="scanlines" class="fx-layer" aria-hidden="true"></div>
 <div id="vignette" class="fx-layer" aria-hidden="true"></div>
 
-<!-- ================= AUDIO CONTROL ================= -->
 <button id="audio-toggle" class="hud-btn audio-toggle" aria-label="Toggle sound">
-  <span class="audio-icon">🔊</span>
+  <span class="audio-icon">SOUND</span>
 </button>
 
 <audio id="audio-rain" loop preload="none" src="assets/audio/rain.mp3"></audio>
@@ -44,7 +38,6 @@
 <audio id="audio-theme" loop preload="none" src="assets/audio/theme.mp3"></audio>
 <audio id="audio-access" preload="none" src="assets/audio/access-granted.mp3"></audio>
 
-<!-- ================= PAGE 1 : BATCOMPUTER BOOT ================= -->
 <section id="page-boot" class="page active">
 
   <div class="start-gate" id="start-gate">
@@ -60,7 +53,6 @@
 
   <div class="boot-scene" id="boot-scene">
 
-    <!-- Gotham skyline + sky -->
     <div class="skyline-wrap">
       <div class="moon"></div>
       <div class="bat-signal-beam" id="bat-signal-beam"></div>
@@ -114,7 +106,7 @@
         <svg viewBox="0 0 200 200" class="we-diamond small"><polygon points="100,10 190,100 100,190 10,100" /></svg>
         <div class="we-header-text">
           <p class="we-title">WAYNE ENTERPRISES</p>
-          <p class="we-sub">APPLIED SCIENCES DIVISION — BATCOMPUTER MAINFRAME</p>
+          <p class="we-sub">APPLIED SCIENCES DIVISION - BATCOMPUTER MAINFRAME</p>
         </div>
       </div>
 
@@ -145,11 +137,10 @@
       <button id="enter-batcave" class="btn-primary reveal-btn">ENTER THE BATCAVE</button>
     </div>
 
-    <p class="storm-caption">GOTHAM CITY — 23:47 — STORM WARNING IN EFFECT</p>
+    <p class="storm-caption">GOTHAM CITY - 23:47 - STORM WARNING IN EFFECT</p>
   </div>
 </section>
 
-<!-- ================= PAGE 2 : BATMAN DOSSIER ================= -->
 <section id="page-dossier" class="page">
   <div class="hud-frame">
     <div class="hud-corner tl"></div>
@@ -212,7 +203,6 @@
   </div>
 </section>
 
-<!-- ================= PAGE 3 : MISSION CONTROL ================= -->
 <section id="page-missions" class="page">
   <div class="hud-frame">
     <div class="hud-corner tl"></div>
@@ -234,7 +224,7 @@
           <p class="mission-name">Secure the Docks</p>
           <p class="mission-state">STATUS: <span>COMPLETED</span></p>
         </div>
-        <div class="mission-icon">✔</div>
+        <div class="mission-icon">DONE</div>
       </div>
 
       <div class="mission-card completed" data-mission="2">
@@ -244,7 +234,7 @@
           <p class="mission-name">Shut Down Ace Chemicals Leak</p>
           <p class="mission-state">STATUS: <span>COMPLETED</span></p>
         </div>
-        <div class="mission-icon">✔</div>
+        <div class="mission-icon">DONE</div>
       </div>
 
       <div class="mission-card locked" data-mission="3" id="mission-3">
@@ -252,9 +242,9 @@
         <div class="mission-body">
           <p class="mission-id">MISSION 003</p>
           <p class="mission-name">??? CLASSIFIED ???</p>
-          <p class="mission-state">STATUS: <span>LOCKED — TAP TO DECRYPT</span></p>
+          <p class="mission-state">STATUS: <span>LOCKED - TAP TO DECRYPT</span></p>
         </div>
-        <div class="mission-icon lock-icon">🔒</div>
+        <div class="mission-icon lock-icon">LOCK</div>
       </div>
     </div>
 
@@ -262,7 +252,7 @@
       <div class="folder-anim" id="folder-anim">
         <div class="folder-back"></div>
         <div class="folder-doc">
-          <div class="doc-header">TOP SECRET — EYES ONLY: BATMAN</div>
+          <div class="doc-header">TOP SECRET - EYES ONLY: BATMAN</div>
           <div class="doc-terminal" id="doc-terminal">
             <p class="term-line" data-text="&gt; DECRYPTING FILE 003..."></p>
             <p class="term-line" data-text="&gt; ACCESS LEVEL: ALFRED PENNYWORTH OVERRIDE..."></p>
@@ -279,7 +269,6 @@
   </div>
 </section>
 
-<!-- ================= PAGE 4 : HAPPY BIRTHDAY ================= -->
 <section id="page-birthday" class="page">
   <div class="birthday-wrap">
     <div class="bat-logo-glow">
@@ -292,7 +281,7 @@
     <h1 class="line-two" id="line-two">HAPPY BIRTHDAY</h1>
 
     <div class="alfred-note" id="alfred-note">
-      <p class="alfred-heading">— A MESSAGE FROM ALFRED —</p>
+      <p class="alfred-heading">- A MESSAGE FROM ALFRED -</p>
       <p class="alfred-text" id="alfred-text"></p>
     </div>
 
@@ -308,21 +297,19 @@
         <rect x="116" y="25" width="6" height="22" class="candle"/>
         <ellipse cx="119" cy="20" rx="6" ry="9" class="flame"/>
       </svg>
-      <button id="blow-candle" class="btn-secondary">🎂 LIGHT THE CANDLE</button>
+      <button id="blow-candle" class="btn-secondary">LIGHT THE CANDLE</button>
     </div>
 
     <button id="goto-vault" class="btn-primary big-btn">OPEN MEMORY VAULT</button>
   </div>
 </section>
 
-<!-- ================= PAGE 5 : MEMORY VAULT ================= -->
 <section id="page-vault" class="page">
   <div class="vault-wrap">
     <p class="vault-kicker">BATCAVE ARCHIVES // MEMORY VAULT</p>
     <h1 class="vault-heading">THE FILES THAT MATTER MOST</h1>
 
     <div class="photo-wall" id="photo-wall">
-      <!-- Slots resolve to real photos if present in assets/images, else show an elegant capture card -->
       <div class="photo-slot" data-src="assets/images/photo1.jpg" data-caption="Case File 01"></div>
       <div class="photo-slot" data-src="assets/images/photo2.jpg" data-caption="Case File 02"></div>
       <div class="photo-slot" data-src="assets/images/photo3.jpg" data-caption="Case File 03"></div>
@@ -343,12 +330,11 @@
       <svg viewBox="0 0 200 90" class="bat-emblem fade-emblem">
         <path d="M100 0 C95 10 85 8 80 18 C78 8 65 2 55 10 C60 2 45 -4 32 6 C40 -6 20 -8 8 6 C0 14 4 26 12 30 C6 34 2 44 10 52 C4 56 6 66 16 68 C34 72 46 60 52 50 C56 62 66 70 78 66 C74 76 82 88 100 90 C118 88 126 76 122 66 C134 70 144 62 140 50 C146 60 158 72 176 68 C186 66 188 56 182 52 C190 44 186 34 180 30 C188 26 192 14 184 6 C172 -8 152 -6 160 6 C147 -4 132 2 137 10 C127 2 114 8 112 18 C107 8 105 10 100 0 Z" />
       </svg>
-      <button id="restart-btn" class="btn-secondary">↺ REPLAY TRANSMISSION</button>
+      <button id="restart-btn" class="btn-secondary">REPLAY TRANSMISSION</button>
     </div>
   </div>
 </section>
 
-<!-- Page indicator -->
 <div class="page-dots" id="page-dots">
   <span class="dot active" data-page="page-boot"></span>
   <span class="dot" data-page="page-dossier"></span>
