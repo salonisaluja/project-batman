@@ -1,144 +1,106 @@
-# 🦇 Batman Birthday Transmission — Wayne Enterprises Batcomputer
+# Batman Birthday Transmission - Wayne Enterprises Batcomputer
 
-A cinematic, dark, Arkham-inspired birthday website. Five acts: a Batcomputer boot sequence,
-a classified dossier, a mission-control terminal, a warm birthday reveal, and a memory vault
-of photos. Built with plain HTML5, CSS3, and vanilla JavaScript — no build step, no framework,
-no npm. It runs by opening `index.html` directly, and deploys as-is to GitHub Pages.
-
----
+A cinematic, dark, Arkham-inspired birthday website. Five pages: a Batcomputer boot
+sequence, a classified dossier, a mission-control terminal, a warm birthday reveal, and a
+memory vault of photos. Built with plain HTML5, CSS3, and vanilla JavaScript - no build
+step, no framework, no npm. Runs by opening index.html directly, and deploys as-is to
+GitHub Pages.
 
 ## 1. Project structure
 
-```
 Batman-Birthday/
-├── index.html          All five pages/sections live in this one file
-├── style.css            Full visual design system + animations
-├── script.js             Boot sequence, transitions, FX, interactivity
-├── README.md
-└── assets/
-    ├── images/           Your own birthday photos (see below)
-    ├── audio/             Optional sound effects & music (see below)
-    ├── videos/            Reserved — not required by default build
-    └── icons/             Favicon, etc.
-```
+  index.html      - all five pages live in this one file
+  style.css       - full visual design system and animations
+  script.js       - boot sequence, transitions, effects, interactivity
+  README.md
+  assets/
+    images/       - your own birthday photos (see below)
+    audio/        - optional sound effects and music (see below)
+    videos/       - reserved, not required by default build
+    icons/        - favicon, etc.
 
-No other files are required. There is nothing to install and nothing to compile.
-
----
+No other files are required. Nothing to install, nothing to compile.
 
 ## 2. Run it locally
 
-Just double-click `index.html`, or open it from your browser with `File > Open`.
-Everything — rain, lightning, the boot terminal, radar, mission unlock, confetti, and the
-photo vault — works with zero server. (Optional: for the smoothest experience serving over
-`http://` instead of `file://` avoids some browsers' stricter autoplay/image rules — you can
-do this with any static server, e.g. `python3 -m http.server` in the project folder — but it
-is **not required**.)
+Double-click index.html, or open it from your browser with File > Open. Everything works
+with zero server: rain, lightning, the boot terminal, radar, mission unlock, confetti,
+and the photo vault.
 
----
+If clicking INITIALIZE ever appears to do nothing, open your browser DevTools (F12),
+check the Console tab for a red error message, and confirm all three files (index.html,
+style.css, script.js) are saved as plain text in the same folder, with no extra ".txt"
+extension added by your editor.
 
 ## 3. Deploy to GitHub Pages
 
-1. Create a new GitHub repository (public or private with Pages enabled).
-2. Upload the entire `Batman-Birthday` folder contents to the **root** of the repository
-   (i.e. `index.html` should sit at the repo root, not inside a subfolder) — or push via git:
-   ```bash
+1. Create a new GitHub repository.
+2. Upload the folder contents to the root of the repository (index.html at the repo
+   root, not inside a subfolder). Or push with git:
+
    git init
    git add .
    git commit -m "Batman birthday site"
    git branch -M main
    git remote add origin https://github.com/<your-username>/<your-repo>.git
    git push -u origin main
-   ```
-3. In your repository: **Settings → Pages → Build and deployment → Source: Deploy from a
-   branch**, then choose **branch: `main`**, **folder: `/ (root)`**. Save.
-4. Wait about a minute, then visit the URL GitHub shows you
-   (`https://<your-username>.github.io/<your-repo>/`).
 
-All asset paths in this project are relative (`assets/...`), so it works both at a domain
-root and inside a repository subpath — no configuration needed.
+3. In the repository: Settings > Pages > Build and deployment > Source: Deploy from a
+   branch. Choose branch: main, folder: / (root). Save.
+4. Wait about a minute, then visit the URL GitHub shows you.
 
----
+All asset paths are relative (assets/...), so this works at a domain root or inside a
+repository subpath with no configuration changes.
 
-## 4. Adding your own content (recommended, optional)
+## 4. Adding your own content (optional)
 
-The site works out of the box with **zero extra files** — every visual effect (rain, skyline,
-bat signal, HUD, radar, cake, confetti, Bat-emblem) is drawn with CSS/SVG/Canvas, so nothing
-is missing if you skip this step. Two things are genuinely personal and left for you to add:
+The site works with zero extra files - every effect (rain, skyline, bat signal, HUD,
+radar, cake, confetti, bat emblem) is drawn with CSS, SVG, and Canvas.
 
-### Photos — Memory Vault (Page 5)
-Drop up to 6 images into `assets/images/` using these exact filenames:
+Photos - Memory Vault (Page 5): drop up to 6 images into assets/images/ using these
+exact filenames:
 
-```
-assets/images/photo1.jpg
-assets/images/photo2.jpg
-assets/images/photo3.jpg
-assets/images/photo4.jpg
-assets/images/photo5.jpg
-assets/images/photo6.jpg
-```
+  assets/images/photo1.jpg
+  assets/images/photo2.jpg
+  assets/images/photo3.jpg
+  assets/images/photo4.jpg
+  assets/images/photo5.jpg
+  assets/images/photo6.jpg
 
-Any image format works if you also update the extension in `index.html`
-(search for `photo1.jpg` etc. inside the `#photo-wall` block). If a file is missing, that
-tile gracefully shows a labeled placeholder instead of breaking the layout — nothing crashes.
+If a file is missing, that tile shows a labeled placeholder instead of breaking.
 
-### Audio (optional, fully optional)
-Drop files with these exact names into `assets/audio/` to enable sound:
+Audio (optional) - drop files with these exact names into assets/audio/ to enable sound:
 
-| File | Used for |
-|---|---|
-| `rain.mp3` | Looping ambient rain during the storm pages |
-| `thunder.mp3` | Random lightning strikes |
-| `click.mp3` | Button click feedback |
-| `typing.mp3` | Terminal / typewriter ticks |
-| `theme.mp3` | Warm cinematic score once the storm clears (Page 4–5) |
-| `access-granted.mp3` | Plays when the boot sequence completes |
+  rain.mp3              looping ambient rain during the storm pages
+  thunder.mp3            random lightning strikes
+  click.mp3               button click feedback
+  typing.mp3               terminal / typewriter ticks
+  theme.mp3                 warm cinematic score once the storm clears
+  access-granted.mp3         plays when the boot sequence completes
 
-The site works perfectly without any of these — missing audio fails silently (you'll just
-have a quieter, still fully animated, experience). You can find royalty-free rain/thunder/
-cinematic tracks on sites like Pixabay Audio or freesound.org — just check each track's
-license before using it publicly.
+Missing audio fails silently - the site still fully works, just quieter.
 
-### Favicon
-Drop a `favicon.png` into `assets/icons/` if you'd like a custom browser tab icon.
-
----
+Favicon: drop a favicon.png into assets/icons/ for a custom browser tab icon.
 
 ## 5. Customizing the text
 
-Everything is plain text inside `index.html` — open it in any text editor and change:
+Page 2 (Dossier): edit the data-type="..." attributes and data-value="..." skill values.
+Page 3 (Missions): edit mission names/status and the message inside #doc-terminal.
+Page 4 (Birthday): edit the headline and Alfred's message (the "message" variable in
+script.js).
+Page 5 (Vault): edit the closing lines and data-caption="..." attributes.
 
-- **Page 2 (Dossier):** the profile fields (`data-type="..."` attributes) and skill values
-  (`data-value="..."` attributes, 0–100).
-- **Page 3 (Missions):** mission names/status, and the classified message inside
-  `#doc-terminal`.
-- **Page 4 (Birthday):** the headline, Alfred's message (inside `script.js`, search for
-  `const message = ...`), and the cake.
-- **Page 5 (Vault):** the closing message lines and photo captions
-  (`data-caption="..."` attributes).
-
-No build step is needed after editing — just save and refresh.
-
----
+No build step needed - just save and refresh.
 
 ## 6. Browser notes
 
-- Autoplay policies mean ambient audio only begins after the visitor taps **INITIALIZE** on
-  the very first screen — this is intentional and required by every modern browser.
-- The site respects `prefers-reduced-motion` for visitors who have that OS setting enabled.
-- Tested against current versions of Chrome, Firefox, Safari, and Edge. No polyfills or
-  external JS frameworks are used — only vanilla HTML5/CSS3/JS, so compatibility is broad.
+Ambient audio only begins after tapping INITIALIZE on the first screen (required by
+browser autoplay policy). The site respects prefers-reduced-motion. Vanilla HTML5, CSS3,
+JS only - works in current Chrome, Firefox, Safari, and Edge.
 
----
+## 7. Credits and license
 
-## 7. Credits & license
-
-Built with HTML5, CSS3, and vanilla JavaScript only. Fonts (Oswald, Rajdhani, Share Tech
-Mono) are loaded from Google Fonts via CDN. All visual effects (skyline, bat signal, HUD,
-radar, cake, Bat-emblem, confetti, rain) are original CSS/SVG/Canvas — no external image or
-media assets are bundled, so there are no third-party licensing concerns out of the box.
-Add your own photos/audio as described above; make sure you have the rights to anything you
-add before publishing the repository publicly.
-
-Happy Birthday. 🦇
-
+Fonts (Oswald, Rajdhani, Share Tech Mono) load from Google Fonts via CDN. All visual
+effects are original CSS/SVG/Canvas - no bundled media assets, so no third-party
+licensing concerns out of the box. Make sure you have rights to any photos or audio you
+add before publishing.
